@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/home.css">
+    <style>
+        /* Add styles for the overlay */
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            /* Light white shade */
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        /* Add styles for the loading spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <title style="font-family:myFont">Logon</title>
+</head>
+
+<body>
+    <!-- <img src="../img/c1.png" alt="Cloud Image" id="myImage3"> -->
+    <div class="outer">
+        <div class="container">
+            <img src="../img/c1.png" alt="Cloud Image" id="myImage1">
+            <img src="../img/c3.png" alt="Cloud Image" id="myImage2">
+            <img src="../img/c4.png" alt="Cloud Image" id="myImage4">
+            <form class="outer-wrap ft-33" action="http://localhost:3000/Login" id="myForm" method="post">
+                <div class="row">Log on</div>
+                <div class="row"><input type="text" name="id" autocomplete="off"
+                        placeholder="Enter username " id="username"></div>
+                <div class="row"><input type="password" name="pw" placeholder="Enter Password" id="password">
+                </div>
+                <div class="row1">
+                    <div class="row"><a href="">forgot password</a></div>
+                    <div class="row"><a href="">signup</a></div>
+                </div>
+                <div class="row-error error-message" style="color: red;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add overlay and loading spinner elements -->
+    <div id="overlay">
+        <div class="spinner"></div>
+    </div>
+<script src="/script/home.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One-to-One Chat</title>
+</head>
+<body>
+    <h1>One-to-One Chat</h1>
+    
+    <div>
+        <label for="recipient">Recipient:</label>
+        <input type="text" id="recipient" placeholder="Recipient's name">
+    </div>
+    
+    <div>
+        <label for="message">Message:</label>
+        <input type="text" id="message" placeholder="Type your message">
+    </div>
+    
+    <button id="send">Send</button>
+    
+    <div id="chat">
+        <h2>Chat</h2>
+        <ul id="messages"></ul>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Ask the user for their name (you can implement this in your UI)
+        const userId = prompt('Please enter your name:');
+
+        // Emit a 'join' event to let the server know the user has joined
+        socket.emit('join', userId);
+
+        // Handle sending a private message
+        document.getElementById('send').addEventListener('click', () => {
+            const recipientId = document.getElementById('recipient').value;
+            const message = document.getElementById('message').value;
+
+            // Emit a 'private message' event with recipient ID and message
+            socket.emit('private message', { recipientId, message });
+
+            // Clear the input field
+            document.getElementById('message').value = '';
+        });
+
+        // Listen for private messages from the server
+        socket.on('private message', ({ senderId, message }) => {
+            const chat = document.getElementById('messages');
+            const listItem = document.createElement('li');
+            listItem.textContent = `${senderId}: ${message}`;
+            chat.appendChild(listItem);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+*{
+    margin: 0;
+    padding: 0;
+    background-color: black;
+}
+.MainWrapp{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+.MainWrapp .inWrap{
+    background-color: #20cd8d;
+    height: 100%;
+    width: 87%;
+    display: flex;
+}
+.MainWrapp .inWrap .list{
+    height: 100%;
+    width: 25%;
+    background-color: inherit;
+    min-width: 340px;
+    display: flex;
+    flex-direction: column;
+}
+.MainWrapp .inWrap .chats{
+    height: 100%;
+    width: 75%;
+    min-width: 700px;
+    background-color: brown;
+}
+.MainWrapp .inWrap .list .CName{
+    background-color: #20cd8d;
+    color: #f1fffb;
+    padding: 40px 47px;
+    font-size: 19px;
+    letter-spacing: 2px;
+    word-spacing: 5px;
+}

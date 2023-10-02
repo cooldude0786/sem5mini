@@ -1,0 +1,113 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    background-color: rgb(14 14 14);
+    position: relative;
+}
+/* In your CSS file (home.css) */
+#myImage1 {
+    position: absolute;
+    left: calc(0px - 170px);
+    top: -12px;
+    height: 46.4px;
+    width: 188.7px;
+    z-index: -1;
+}
+#myImage2 {
+    position: absolute;
+    top: calc(0px - 134px);
+    right: calc(0px - 141px);
+    height: 144.8px;
+    width: 275.2px;
+}
+#myImage4 {
+    position: absolute;
+    left: -359px;
+    bottom: 50px;
+    height: 46.4px; /* Set the height of the image */
+    width: 188.7px; /* Set the width of the image */
+}
+.outer{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-top: 60px;
+    z-index: -1;
+}
+.outer .container{
+    width: 39%;
+    height: 520px;
+    background-color: #01c37d;
+    margin: 79px 10px;
+    padding: 0px 0px;
+    border-radius: 28px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.outer .container .outer-wrap{
+height: 60%;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: space-evenly;
+}
+.ft-33{
+    font-size: 33.7pt;
+    font-family: myFont;
+}
+@font-face {
+    font-family: myFont;
+    src: url(Pixelify_Sans/PixelifySans-VariableFont_wght.ttf);
+  }
+
+.row1{
+    display: flex;
+    font-size: 10pt;
+    justify-content: space-between;
+    width: 100%;
+    height: 33px;
+    align-items: center;
+}
+.row input{
+    height: 40px;
+    width: 100%;
+    color: #01c37d;
+    background-color: #231f1e;
+    font-family: myFont;
+    font-size: 19px;
+    border: none;
+    border-radius: 20pt;
+    padding: 0 0px;
+    text-align: center;
+}
+.row input::placeholder{
+    color: #24503f;
+
+}
+.row input:focus-visible{
+    outline: none;
+}
+.row a{
+    text-decoration: none;
+    color: inherit;
+    transition: font-size 0.2s ease-in;
+}
+.row a:hover{
+    font-size: 20px;
+}
+/* Add this CSS rule to set the cursor for the disabled password field */
+#password[disabled] {
+    cursor: not-allowed;
+}
+.row-error{
+    display: flex;
+    flex-wrap: wrap;
+    width: 312px;
+    font-size: 20px;
+}
