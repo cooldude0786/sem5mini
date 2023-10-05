@@ -3,6 +3,11 @@
     src: url(Nanum_Gothic/NanumGothic-Regular.ttf);
 }
 
+@font-face {
+    font-family: myPlace;
+    src: url(c/Nunito/Nunito-Italic-VariableFont_wght.ttf);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -21,7 +26,7 @@
 .MainWrapp .inWrap {
     background-color: #20cd8d;
     height: 100%;
-    width: 87%;
+    width: 52%;
     display: flex;
 }
 
@@ -72,7 +77,196 @@
     transform: translateY(-50%);
     border-radius: 19px;
 }
-.MainWrapp .inWrap .list .FrnName{
+
+.MainWrapp .inWrap .list .FrnName {
     font-size: 34px;
+    padding: 5px 28px;
+    font-weight: bold;
     font-family: myLan;
+}
+
+.MainWrapp .inWrap .list .search-out {
+    padding: 10px 10px;
+    display: flex;
+    width: 100%;
+    justify-content: end;
+}
+
+.MainWrapp .inWrap .list .search-out input {
+    background-color: #ade7be;
+    border-radius: 10px;
+    height: 27px;
+    border: none;
+    padding: 0 10px;
+}
+
+.MainWrapp .inWrap .list .search-out input:focus-visible {
+    outline: none;
+}
+
+.MainWrapp .inWrap .list .search-out input::placeholder {
+    text-align: center;
+}
+
+.MainWrapp .inWrap .list .contactList ul {
+    background-color: inherit;
+    width: 100%;
+    height: 100%;
+    list-style: none;
+    max-height: 360px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    overflow-y: auto;
+}
+
+.MainWrapp .inWrap .list .contactList ul::-webkit-scrollbar {
+    width: 20px;
+}
+
+.MainWrapp .inWrap .list .contactList ul::-webkit-scrollbar-thumb {
+    /* border-radius: 100px; */
+    border: 5px solid transparent;
+    background-clip: content-box;
+    background-color: #20cd8d;
+}
+
+.MainWrapp .inWrap .list .contactList ul::-webkit-scrollbar-track {
+    background-color: black;
+    /* border-radius: 100px; */
+}
+
+.MainWrapp .inWrap .list .contactList ul li {
+    background-color: inherit !important;
+    width: 100%;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    padding: 5px 0px;
+}
+
+.MainWrapp .inWrap .list .contactList ul li span {
+    background-color: inherit;
+    padding: 8px 32px;
+    background-color: black;
+    width: 32%;
+    border-radius: 41px;
+}
+
+.MainWrapp .chats {
+    background-color: #20cd8d;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.MainWrapp .chats .sendBox {
+    height: 11%;
+    max-width: 100%;
+    display: flex;
+    background-color: #20cd8d;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-right: 50px;
+}
+
+.MainWrapp .chats .sendBox .inp {
+    border-radius: 30px;
+    height: 70%;
+    padding: 0px 22px;
+    width: 82%;
+    font-size: 20px;
+    background-color: #106748;
+    border: none;
+    opacity: 0.85;
+    font-weight: bold;
+    font-family: myLan;
+    letter-spacing: 0.8px;
+    word-spacing: 1.5px;
+}
+
+.MainWrapp .chats .sendBox .btn-sub {
+    border-radius: 14px;
+    width: 7%;
+    height: 49%;
+    border: none;
+    background-color: aquamarine;
+    font-size: 17px;
+    background-image: url(../img/send.png);
+    background-size: cover;
+    cursor: pointer;
+}
+
+.MainWrapp .chats .sendBox .inp:focus-visible {
+    outline: none;
+}
+
+.MainWrapp .chats .chatWrap {
+    height: 77%;
+    max-width: 90%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    padding: 30px 66px;
+    margin-right: 185px;
+    justify-content: center;
+}
+
+.MainWrapp .chats .chatWrap .chatBox {
+    padding: 39px 0;
+    height: 89%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 31px;
+    /* font-family: myPlace; */
+    font-family: 'Nanum Gothic', sans-serif;
+    font-family: 'Nunito', sans-serif;
+    list-style: none;
+    overflow: auto;
+}
+
+.MainWrapp .chats .chatWrap .chatBox li {
+    background-color: transparent;
+    padding: 12px 12px;
+    display: flex;
+}
+
+.MainWrapp .chats .chatWrap .chatBox li span {
+    padding: 6px 22px;
+    background-color: black;
+    color: #f1fffb;
+    width: fit-content;
+}
+
+.LChat {
+    border-radius: 15px 15px 15px 0;
+    justify-content: flex-end;
+}
+.lChat{
+    justify-content: flex-start;
+}
+.rChat{
+    justify-content: flex-end;
+}
+.RChat {
+    border-radius: 15px 15px 0px 15px ;
+    justify-content: flex-start;
+}
+.MainWrapp .chats .chatWrap .chatBox::-webkit-scrollbar {
+    width: 20px;
+}
+
+.MainWrapp .chats .chatWrap .chatBox::-webkit-scrollbar-thumb {
+    /* border-radius: 100px; */
+    border: 5px solid transparent;
+    background-clip: content-box;
+    background-color: #20cd8d;
+}
+
+.MainWrapp .chats .chatWrap .chatBox::-webkit-scrollbar-track {
+    background-color: black;
+    /* border-radius: 100px; */
 }

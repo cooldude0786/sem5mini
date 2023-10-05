@@ -1,19 +1,30 @@
 // socket/socket.js
 const socketIo = require('socket.io');
+const crypto = require('crypto');
+const secretKey  = "TeItMiniProject"
+
+function decryptString(secretKey, encryptedText) {
+    const iv = crypto.randomBytes(16);
+    const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(secretKey), iv);
+    let decryptedData = decipher.update(encryptedText, 'hex', 'utf8');
+    decryptedData += decipher.final('utf8');
+    return decryptedData;
+}
 let userj=[]
 module.exports = (server) => {
     const io = socketIo(server);
+    console.log('A user connected');
 
     // Store user socket connections in an object
     const connectedUsers = {};
 
     io.on('connection', (socket) => {
-        console.log('A user connected');
 
         // Listen for a user joining the chat room
         socket.on('join', (userId) => {
             userj.push(userId)
-            console.log(userj)
+            console.log('A user connected');
+            console.log(userj);
             // Store the user's socket with their user ID
             connectedUsers[userId] = socket;
         });

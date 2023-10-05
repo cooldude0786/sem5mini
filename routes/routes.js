@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const middleware = require('../mid/middleware'); // Update the import path for middleware
 const path = require("path");
-
+const { v4: uuidv4 } = require('uuid');
+const secretKey  = "TeItMiniProject"
+const crypto = require('crypto');
+console.log(crypto.randomBytes(16))
 
 // Route handler for /translate/:msg
 router.get('/translate/:msg', middleware.setMyInfo, (request, response) => {
@@ -18,7 +21,7 @@ router.get('/', (request, response) => {
 router.get('/user', (req, res) => {
     const userName = req.query.name;
 
-    if (userName!='') {
+    if (userName != '') {
         // Respond with a 200 OK status
         res.status(200).send('OK');
     } else {
@@ -27,14 +30,26 @@ router.get('/user', (req, res) => {
     }
 });
 
-
-router.post('/Login',middleware.logIn, (req, res) => {
+router.post('/Login', middleware.logIn, (req, res) => {
     var username = req.body.id;
     var password = req.body.pw;
+
+    // Generate a UUID for the user
+    // Function to generate a shortened UUID
+    function generateShortUUID() {
+        const fullUUID = uuidv4();
+        // Extract the first 6 characters from the full UUID
+        return fullUUID.substring(0, 6);
+    }
+
+    // Example usage:
+    const shortUUID = generateShortUUID();
+
     // Perform verification logic on the server
     if (username === 'test' || password === '123') {
-        // Redirect to another page on successful verification
-        res.status(200).json({ url: '/next_page' });
+        // Redirect to the next page with the UUID as a query parameter
+        // res.redirect(`/next_page?uuid=${shortUUID}`);
+        res.status(200).json({ url: `/next_page?uuid=${shortUUID}` });
     } else {
         // Send an error message to the client
         res.status(400).json({ error: 'Invalid username or password' });
