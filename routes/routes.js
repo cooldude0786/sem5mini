@@ -13,6 +13,10 @@ router.get('/translate/:msg', middleware.setMyInfo, (request, response) => {
     response.status(200).send(`${msg} welldone`);
 });
 
+router.get('/abcd',(req,res)=>{
+    res.sendFile(path.join(__dirname,"../test.html"))
+})
+
 router.get('/', (request, response) => {
     let indexPath = path.join(__dirname, "../scr/pages/home.html");
     response.sendFile(indexPath);
