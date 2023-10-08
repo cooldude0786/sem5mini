@@ -39,6 +39,7 @@ app.get('/socket.io/socket.io.js', (req, res) => {
 app.use('/style',express.static('scr/style'));
 app.use('/img',express.static('scr/img'));
 app.use('/script',express.static('scr/script'));
+app.use('/db',express.static('db'));
 
 // Use the routes defined in routes/routes.js
 app.use('/', routes);

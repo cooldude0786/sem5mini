@@ -3,18 +3,20 @@ const router = express.Router();
 const middleware = require('../mid/middleware'); // Update the import path for middleware
 const path = require("path");
 const { v4: uuidv4 } = require('uuid');
-const secretKey  = "TeItMiniProject"
-const crypto = require('crypto');
-console.log(crypto.randomBytes(16))
-
+const FileEncryption = require('../scr/script/lock.js');
+const fileEncryption = new FileEncryption('key.txt');
+const uuidUsernameMap = {};
+const db = require('../db/db');
+// const fileEncryption = new FileEncryption('../scr/script/lock.js');
+// console.log(path.join(__dirname,'../scr/script/lock.js'))
 // Route handler for /translate/:msg
 router.get('/translate/:msg', middleware.setMyInfo, (request, response) => {
     var msg = request.params.msg;
     response.status(200).send(`${msg} welldone`);
 });
 
-router.get('/abcd',(req,res)=>{
-    res.sendFile(path.join(__dirname,"../test.html"))
+router.get('/abcd', (req, res) => {
+    res.sendFile(path.join(__dirname, "../test.html"))
 })
 
 router.get('/', (request, response) => {
@@ -34,26 +36,26 @@ router.get('/user', (req, res) => {
     }
 });
 
-router.post('/Login', middleware.logIn, (req, res) => {
+router.post('/Login', middleware.logIn, async (req, res) => {
     var username = req.body.id;
-    var password = req.body.pw;
-
-    // Generate a UUID for the user
-    // Function to generate a shortened UUID
-    function generateShortUUID() {
-        const fullUUID = uuidv4();
-        // Extract the first 6 characters from the full UUID
-        return fullUUID.substring(0, 6);
-    }
-
-    // Example usage:
-    const shortUUID = generateShortUUID();
-
-    // Perform verification logic on the server
-    if (username === 'test' || password === '123') {
-        // Redirect to the next page with the UUID as a query parameter
-        // res.redirect(`/next_page?uuid=${shortUUID}`);
-        res.status(200).json({ url: `/next_page?uuid=${shortUUID}` });
+    var password = fileEncryption.encrypt(req.body.pw);
+    const result = await db.loginWithEmailAndPassword(username, password)
+    if (result.success) {
+        const shortUUID = fileEncryption.encrypt(generateShortUUID());
+        // uuidUsernameMap[shortUUID] = result.username;
+        const existingUUID = Object.keys(uuidUsernameMap).find((key) => {
+            const storedData = uuidUsernameMap[key];
+            return storedData.username === result.username || storedData.email === result.email;
+        });
+        // Checking for data
+        if (existingUUID) {
+            // Either username or email is already connected, send an error response
+            res.status(400).json({ error: 'Username or email is already connected' });
+        } else {
+            uuidUsernameMap[shortUUID] = { username: result.username, email: result.email };
+            console.log("Our server uuidUserNameMap", uuidUsernameMap)
+            res.status(200).json({ url: `/next_page?uuid=${shortUUID}`, u: result.username });
+        }
     } else {
         // Send an error message to the client
         res.status(400).json({ error: 'Invalid username or password' });
@@ -62,6 +64,66 @@ router.post('/Login', middleware.logIn, (req, res) => {
 
 // Define a route for the next page
 router.get('/next_page', (req, res) => {
-    res.sendFile(path.join(__dirname, '../scr/pages/chat_On.html'));
+    // console.log('chat one 1',req.query.uuid)
+    const uuid = fileEncryption.decrypt(req.query.uuid)
+    // console.log('chat one',uuid)
+    res.sendFile(path.join(__dirname, `../scr/pages/chat_On.html`));
+    // res.status(200).send('good');
 });
+
+
+router.post('/signup', middleware.mySignup, async (req, res) => {
+    const { name, Uname, email, pw, cpw, xie_num } = req.body;
+    req.body.pw = fileEncryption.encrypt(req.body.pw)
+    const result = await db.insertFormData(req.body)
+    if (result.success) {
+        res.status(200).json({ url: "Login" })
+    } else if (!result.success) {
+        res.status(400).json({ error: result.message, action: result.action });
+    }
+    // res.status(200).json({ url: req.body.pw })
+});
+router.get('/SignUp', (req, res) => {
+    res.sendFile(path.join(__dirname, `../scr/pages/signup.html`));
+});
+
+router.get('/checkUuid', (req, res) => {
+    const uuidToCheck = decodeURIComponent(req.query.uuid);
+    console.log("here check url",uuidToCheck)
+    console.log('at serve side',uuidToCheck,'-->',uuidUsernameMap.hasOwnProperty(uuidToCheck))
+    const isUUIDConnected = uuidUsernameMap.hasOwnProperty(uuidToCheck);
+    res.json({ connected: isUUIDConnected });
+});
+
+
+router.get('/getUsername', (req, res) => {
+    const uuid = req.query.uuid;
+    // Check if the UUID exists in your mapping
+    const data = uuidUsernameMap[uuid]
+    res.json({ data: data.username })
+    // if (data) {
+    //     res.json({ data });
+    // } else {
+    //     res.status(404).json({ error: 'Username not found' });
+    // }
+});
+
+function generateShortUUID() {
+    let shortUUID;
+
+    do {
+        // Generate a full UUID
+        const fullUUID = uuidv4();
+
+        // Extract the first 6 characters from the full UUID
+        shortUUID = fullUUID.substring(0, 6);
+
+        // Check if the short UUID is already in use
+    } while (uuidUsernameMap[shortUUID]);
+    return shortUUID;
+}
+
+
+
+
 module.exports = router;

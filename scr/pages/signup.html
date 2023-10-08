@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="../style/signup.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <form class="inside" action="http://localhost:3000/signup" method="post">
+            <img src="../img/c2.png" alt="Cloud Image" id="myImage1">
+            <img src="../img/c2.png" alt="Cloud Image" id="myImage2">
+            <img src="../img/c2.png" alt="Cloud Image" id="myImage4">
+            <div class="signup">Signup</div>
+            <div class="row"><input type="text" id="name" placeholder="Enter Name"></div>
+            <div class="row"><input type="text" id="Uname" placeholder="Enter Username"></div>
+            <div class="row"><input type="email" id="email" placeholder="Enter Email"></div>
+            <div class="row"><input type="password" id="pw" placeholder="Enter Password"></div>
+            <div class="row"><input type="password" id="cpw" placeholder="Confirm Password"></div>
+            <div class="row"><input type="number" id="xie_num" placeholder="Enter Xie Number"></div>
+            <div class="row" id="errorMessage" style="color: red;"></div>
+            <div class="row">
+                <a href="http://localhost:3000/">Already Have Account?</a>
+            </div>
+        </form>
+    </div>
+    <script src="../script/signup.js"></script>
+</body>
+
+</html>

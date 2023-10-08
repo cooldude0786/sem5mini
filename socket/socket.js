@@ -1,33 +1,35 @@
 // socket/socket.js
 const socketIo = require('socket.io');
-const crypto = require('crypto');
-const secretKey  = "TeItMiniProject"
-
-function decryptString(secretKey, encryptedText) {
-    const iv = crypto.randomBytes(16);
-    const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(secretKey), iv);
-    let decryptedData = decipher.update(encryptedText, 'hex', 'utf8');
-    decryptedData += decipher.final('utf8');
-    return decryptedData;
-}
-let userj=[]
+const axios = require('axios');
+const connectedUsers = new Set();
 module.exports = (server) => {
     const io = socketIo(server);
     console.log('A user connected');
 
     // Store user socket connections in an object
-    const connectedUsers = {};
 
     io.on('connection', (socket) => {
-
+        // console.log(socket.handshake.query.uuid)
         // Listen for a user joining the chat room
-        socket.on('join', (userId) => {
-            userj.push(userId)
-            console.log('A user connected');
-            console.log(userj);
+        socket.on('join', async (userId) => {
+            userId = decodeURIComponent(userId);
+            connectedUsers.add(userId);
+            console.log('socket A user connected ==>', connectedUsers);
+            try {
+                const response = await axios.get(`http://localhost:3000/checkUuid?uuid=${userId}`);
+                // console.log("Socket ansd",response.data.connected)
+                if (response.data.connected !== true) {
+                    io.emit('closeit');
+                    console.log("socket side run else")
+                    // Handle the case where the UUID doesn't exist
+                }
+            } catch (error) {
+                console.error('Error making HTTP request:');
+            }
             // Store the user's socket with their user ID
-            connectedUsers[userId] = socket;
+            io.emit('userJoined', Array.from(connectedUsers));
         });
+
 
         // Handle private messages
         socket.on('private message', ({ recipientId, message }) => {
@@ -38,22 +40,20 @@ module.exports = (server) => {
                 // Emit the private message to the recipient's socket
                 recipientSocket.emit('private message', { senderId: socket.id, message });
             }
-            else{
+            else {
                 console.log("not found")
             }
         });
 
-        // Handle user disconnection
-        socket.on('disconnect', () => {
-            console.log('User disconnected');
+        socket.on('beforeDisconnect', (userUUID) => {
+            console.log(`User with UUID ${decodeURIComponent(userUUID)} is about to disconnect`);
+            // Handle the user disconnect event here
+        });
 
-            // Remove the user's socket from the connected users object
-            for (const userId in connectedUsers) {
-                if (connectedUsers[userId] === socket) {
-                    delete connectedUsers[userId];
-                    break;
-                }
-            }
+        socket.on('disconnect', () => {
+            connectedUsers.delete(decodeURIComponent(socket.handshake.query.uuid));
+            console.log(`User with UUID disconnected`, connectedUsers);
+            // Handle the user disconnect event here
         });
     });
 };

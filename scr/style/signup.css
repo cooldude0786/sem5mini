@@ -1,0 +1,116 @@
+@font-face {
+    font-family: myPlace;
+    src: url(Nanum_Gothic/NanumGothic-Regular.ttf);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    height: 100vh;
+    width: 100%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.wrapper{
+    z-index: 0;
+    width: 87%;
+    min-height: 100%;
+    background-color: #01c37d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.inside{
+    position: relative;
+    width: 40%;
+    height: 70%;
+    background-color: black;
+    border-radius: 40px;
+    padding: 26px 40px;
+    color: #00c37f;
+    font-family: myPlace;
+    /* z-index: 2; */
+}
+#myImage1 {
+    position: absolute;
+    left: calc(0px - 170px);
+    top: -12px;
+    height: 114.4px;
+    width: 188.7px;
+    z-index: -1;
+}
+#myImage2 {
+    position: absolute;
+    top: calc(0px - 134px);
+    right: calc(0px - 141px);
+    height: 144.8px;
+    width: 275.2px;
+}
+#myImage4 {
+    position: absolute;
+    left: -260px;
+    bottom: 50px;
+    height: 114.4px; /* Set the height of the image */
+    width: 188.7px; /* Set the width of the image */
+    z-index: -1;
+}
+.signup{
+    font-size: 45px;
+    padding: 13px 59px;
+}
+.row{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 13px 0;
+    font-family: cursive;
+}
+.row input {
+    background-color: #02c37d;
+    border-radius: 10px;
+    height: 30px;
+    width: 52%;
+    border: none;
+    padding: 0 10px;
+}
+.row input::placeholder{
+    color: #007d4c;
+    text-align: center;
+}
+#name[disabled] {
+    cursor: not-allowed;
+}
+#Uname[disabled] {
+    cursor: not-allowed;
+}
+#email[disabled] {
+    cursor: not-allowed;
+}
+#pw[disabled] {
+    cursor: not-allowed;
+}
+#cpw[disabled] {
+    cursor: not-allowed;
+}
+#xie_num[disabled] {
+    cursor: not-allowed;
+}
+.row-error{
+    display: flex;
+    flex-wrap: wrap;
+    width: 312px;
+    font-size: 20px;
+}
+.row a{
+    text-decoration: none;
+    color: inherit;
+    transition: font-size 0.2s ease-in;
+}
+.row a:hover{
+    font-size: 20px;
+}

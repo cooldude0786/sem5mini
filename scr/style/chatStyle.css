@@ -262,7 +262,6 @@
 .MainWrapp .chats .chatWrap .chatBox::-webkit-scrollbar-thumb {
     /* border-radius: 100px; */
     border-radius: 0px 16px 16px 0px !important;
-
     border: 5px solid transparent;
     background-clip: content-box;
     background-color: #20cd8d;

@@ -69,7 +69,8 @@ justify-content: space-evenly;
 .row1{
     display: flex;
     font-size: 10pt;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    justify-content: center;
     width: 100%;
     height: 33px;
     align-items: center;
@@ -110,4 +111,5 @@ justify-content: space-evenly;
     flex-wrap: wrap;
     width: 312px;
     font-size: 20px;
+    justify-content: center;
 }
