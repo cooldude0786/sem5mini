@@ -89,7 +89,7 @@ router.get('/SignUp', (req, res) => {
 });
 
 router.get('/checkUuid', (req, res) => {
-    const uuidToCheck = decodeURIComponent(req.query.uuid);
+    const uuidToCheck = decodeURI(req.query.uuid);
     console.log("92serverCheckUrl", uuidToCheck)
     console.log('93Server-SideUrlResult', uuidToCheck, '-->', uuidUsernameMap.hasOwnProperty(uuidToCheck))
     const isUUIDConnected = uuidUsernameMap.hasOwnProperty(uuidToCheck);
@@ -127,7 +127,7 @@ function generateShortUUID() {
 
 // // Define a route to delete a UID
 // router.delete('/delete-uuid/:userUUID', (req, res) => {
-//     const userUUID =decodeURIComponent(req.params.userUUID);
+//     const userUUID =decodeURI(req.params.userUUID);
 //     console.log("server side Update url ",userUUID)
 //     // if (uuidUsernameMap.hasOwnProperty(userUUID)) {
 //     //     // Remove the UID from the storage
@@ -141,85 +141,18 @@ function generateShortUUID() {
 //     res.json({sucess: "done"+userUUID})
 // });
 
-// router.get('/deleteuuid', (req, res) => {
-//     const userUUID = decodeURIComponent(req.query.uuid);
-//     if (uuidUsernameMap.hasOwnProperty(userUUID)) {
-//         delete uuidUsernameMap[userUUID];
-//         console.log("updated serverSide Uuid", uuidUsernameMap)
-//         res.status(200).json({ data: true });
-//     } else {
-//         // UID not found, return an error
-//         res.status(404).json({ data: false });
-//     }
-//     // res.json({data:true, connected: 'isUUIDConnected' });
-// });
-
-const socketIo = require('socket.io');
-const axios = require('axios'); 
-const { urlencoded } = require('express');
-const connectedUsers = new Set();
-module.exports = (server) => {
-    const io = socketIo(server);
-    console.log('A user connected');
-
-    // Store user socket connections in an object
-
-    io.on('connection', (socket) => {
-        // console.log(socket.handshake.query.uuid)
-        // Listen for a user joining the chat room
-        socket.on('join', async (userId) => {
-            userId = decodeURIComponent(userId);
-            connectedUsers.add(userId);
-            console.log('18socket A user connected ==>', connectedUsers);
-            try {
-                const response = await axios.get(`http://localhost:3000/checkUuid?uuid=${userId}`);
-                // console.log("Socket ansd",response.data.connected)
-                if (response.data.connected !== true) {
-                    io.emit('closeit');
-                    // console.log("socket side run else")
-                    // Handle the case where the UUID doesn't exist
-                }
-            } catch (error) {
-                console.error('28Error making HTTP request: retriving userid');
-            }
-            // Store the user's socket with their user ID
-            io.emit('userJoined', Array.from(connectedUsers));
-        });
-
-
-        // Handle private messages
-        socket.on('private message', ({ recipientId, message }) => {
-            // Get the recipient's socket based on their user ID
-            const recipientSocket = connectedUsers[recipientId];
-
-            if (recipientSocket) {
-                // Emit the private message to the recipient's socket
-                recipientSocket.emit('private message', { senderId: socket.id, message });
-            }
-            else {
-                console.log("not found")
-            }
-        });
-
-        socket.on('beforeDisconnect', (userUUID) => {
-            userUUID = encodeURIComponent(userUUID)
-            socket.on('disconnect', async () => {
-                // try {
-                //     const response = await axios.get(`http://localhost:3000//deleteuuid?uuid=${userUUID}`);
-                //     // console.log("Socket ansd",response.data.connected)
-                //     if (response.data !== true) {
-                //         console.log("socket side run else")
-                //         // Handle the case where the UUID doesn't exist
-                //     }
-                // } catch (error) {
-                //     console.error('Error making HTTP request: giving confirmation check');
-                //     console.log(error)
-                // }
-                console.log(`63User with UUID ${decodeURIComponent(userUUID)} is about to disconnect`);
-            });
-        });
-    });
-};
+router.post('/deleteuuid/', (req, res) => {
+    const userUUID = decodeURI(req.body.uuid);
+    if (uuidUsernameMap.hasOwnProperty(userUUID)) {
+        delete uuidUsernameMap[userUUID];
+        // console.log("updated serverSide Uuid", uuidUsernameMap)
+        res.status(200).json({ data: true });
+    } else {
+        // UID not found, return an error
+        res.status(200).json({ data: false });
+    }
+    // res.json({data:true, connected: 'isUUIDConnected' });
+});
 
 
 module.exports = router;

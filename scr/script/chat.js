@@ -2,6 +2,8 @@
 // const socket = io();
 // import { get } from 'axios'; // For CommonJS (Node.js) syntax
 
+// const { urlencoded } = require("body-parser");
+
 async function getUsernameFromServer(uuid) {
     // Replace 'your_server_endpoint' with the actual endpoint on your server to get the username.
     const url = `/getUsername?uuid=${uuid}`;
@@ -14,7 +16,7 @@ async function getUsernameFromServer(uuid) {
         })
         .then((data) => {
             // Handle the response data here, which should contain the username. 
-                   document.getElementById('ContactList').innerHTML += `<li class="lChat" id="${uuid}"><span class="LChat">${data.data.username}</span></li>`
+            document.getElementById('ContactList').innerHTML += `<li class="lChat" id="${uuid}"><span class="LChat">${data.data.username}</span></li>`
             console.log('Username:', data);
         })
         .catch((error) => {
@@ -39,26 +41,32 @@ function getQueryParam(name) {
 
 // Get the UUID from the URL
 // const userUUID = (getQueryParam('uuid'));
-const userUUID = encodeURIComponent(getQueryParam('uuid'));
+const userUUID = encodeURI(getQueryParam('uuid'));
 const socket = io({ query: { uuid: userUUID } });
 socket.on('connect', async () => {
-    socket.emit('join', userUUID);
+    socket.emit('join', encodeURI(userUUID));
 });
 socket.on('userJoined', (newUserUUID) => {
-    console.log("before loop",newUserUUID)
+    console.log("before loop", newUserUUID)
     loop(newUserUUID)
 });
-const loop = (uids) => {
-    Object.keys(uids).forEach(async (key) => {
-        // const value = uids[key];
-        // console.log(`${key}: ${value}`);
+const loop = async (uids) => {
+    document.getElementById('ContactList').innerHTML = ''
+    for (i in uids) {
+        
+        console.log(uids[i])
+        if(userUUID != uids[i]){await getUsernameFromServer(uids[i])}
+    }
+    // Object.keys(uids).forEach(async (key) => {
+    //     // const value = uids[key];
+    //     // console.log(`${key}: ${value}`);
         // if (userUUID !== value) {
-            const result = await getUsernameFromServer(key)
-            console.log("here in if",result)
-        // } else {
-            // console.log("Here in else", value)
-        // }
-    });
+    //         const result = await getUsernameFromServer(key)
+    //         console.log("here in if",result)
+    //     // } else {
+    //         // console.log("Here in else", value)
+    //     // }
+    // });
 }
 
 

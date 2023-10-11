@@ -226,6 +226,8 @@
     font-family: 'Nunito', sans-serif;
     list-style: none;
     overflow: auto;
+    /* background-image: url(); */
+    /* background-size: cover; */
 }
 
 .MainWrapp .chats .chatWrap .chatBox li {
