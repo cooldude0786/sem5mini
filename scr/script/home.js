@@ -103,7 +103,7 @@ passwordField.addEventListener("input", function () {
                     passwordField.value = ''; // Clear the password field
                 } else if (data.url) {
                     // Redirect to the URL provided in the response
-                    alert(data.url)
+                    // alert(data.url)
                     window.location.href = "http://localhost:3000" + data.url;
                 }
                 hideOverlay();

@@ -180,6 +180,7 @@
     width: 82%;
     font-size: 20px;
     background-color: #106748;
+    color: white;
     border: none;
     opacity: 0.85;
     font-weight: bold;
@@ -254,8 +255,9 @@
     justify-content: flex-end;
 }
 .RChat {
-    border-radius: 15px 15px 0px 15px ;
-    justify-content: flex-start;
+    display: flex;
+    border-radius: 15px 15px 0px 15px;
+    justify-content: flex-end;
 }
 .MainWrapp .chats .chatWrap .chatBox::-webkit-scrollbar {
     width: 20px;
