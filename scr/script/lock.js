@@ -25,39 +25,41 @@ class FileEncryption {
     }
 
     encrypt(text) {
-        const { enc, iv } = this.readKeysFromFile();
-        // console.log(enc,iv)
-        if (!enc || !iv) {
-            console.error('Keys not available.');
-            return null;
-        }
+        // const { enc, iv } = this.readKeysFromFile();
+        // // console.log(enc,iv)
+        // if (!enc || !iv) {
+        //     console.error('Keys not available.');
+        //     return null;
+        // }
 
-        try {
-            let cipher = crypto.createCipheriv(this.ALGO, enc, iv);
-            let encrypted = cipher.update(text, 'utf8', 'base64');
-            encrypted += cipher.final('base64');
-            return encrypted;
-        } catch (error) {
-            console.error('Encryption error:', error.message);
-            return null;
-        }
+        // try {
+        //     let cipher = crypto.createCipheriv(this.ALGO, enc, iv);
+        //     let encrypted = cipher.update(text, 'utf8', 'base64');
+        //     encrypted += cipher.final('base64');
+        //     return encrypted;
+        // } catch (error) {
+        //     console.error('Encryption error:', error.message);
+        //     return null;
+        // }
+        return text;
     }
 
     decrypt(text) {
-        const { enc, iv } = this.readKeysFromFile();
-        if (!enc || !iv) {
-            console.error('Keys not available.');
-            return null;
-        }
+        return text;
+        // const { enc, iv } = this.readKeysFromFile();
+        // if (!enc || !iv) {
+        //     console.error('Keys not available.');
+        //     return null;
+        // }
 
-        try {
-            let decipher = crypto.createDecipheriv(this.ALGO, enc,iv);
-            let decrypted = decipher.update(text, 'base64', 'utf8');
-            return decrypted + decipher.final('utf8');
-        } catch (error) {
-            console.error('Decryption error:', error.message);
-            return null;
-        }
+        // try {
+        //     let decipher = crypto.createDecipheriv(this.ALGO, enc,iv);
+        //     let decrypted = decipher.update(text, 'base64', 'utf8');
+        //     return decrypted + decipher.final('utf8');
+        // } catch (error) {
+        //     console.error('Decryption error:', error.message);
+        //     return null;
+        // }
     }
 }
 

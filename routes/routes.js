@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const FileEncryption = require('../scr/script/lock.js');
 const fileEncryption = new FileEncryption('key.txt');
 const uuidUsernameMap = {};
-uuidUsernameMap['123'] = { username: 'khizar', email: "email" };
+// uuidUsernameMap['123'] = { username: 'khizar', email: "email" };
 const db = require('../db/db');
 // const fileEncryption = new FileEncryption('../scr/script/lock.js');
 // console.log(path.join(__dirname,'../scr/script/lock.js'))
@@ -39,12 +39,14 @@ router.get('/user', (req, res) => {
 
 router.post('/Login', middleware.logIn, async (req, res) => {
     var username = req.body.id;
-    var password = fileEncryption.encrypt(req.body.pw);
+    var password = fileEncryption.encrypt((req.body.pw).trim());
     const result = await db.loginWithEmailAndPassword(username, password)
     if (result.success) {
-        const shortUUID = fileEncryption.encrypt(generateShortUUID());
+        let shortUUID =  fileEncryption.encrypt(generateShortUUID());
+        shortUUID = encodeURIComponent(shortUUID)
         // uuidUsernameMap[shortUUID] = result.username;
         const existingUUID = Object.keys(uuidUsernameMap).find((key) => {
+            // console.log('48 server',key)
             const storedData = uuidUsernameMap[key];
             return storedData.username === result.username || storedData.email === result.email;
         });
@@ -54,13 +56,14 @@ router.post('/Login', middleware.logIn, async (req, res) => {
             res.status(400).json({ error: 'Username or email is already connected' });
         } else {
             uuidUsernameMap[shortUUID] = { username: result.username, email: result.email };
-            console.log("56Server-side login new with", uuidUsernameMap)
+            console.log("Server user joined", shortUUID)
             res.status(200).json({ url: `/next_page?uuid=${shortUUID}`, u: result.username });
         }
     } else {
         // Send an error message to the client
         res.status(400).json({ error: 'Invalid username or password' });
     }
+    console.log('server all user ',uuidUsernameMap)
 });
 
 // Define a route for the next page
@@ -89,9 +92,9 @@ router.get('/SignUp', (req, res) => {
 });
 
 router.get('/checkUuid', (req, res) => {
-    const uuidToCheck = decodeURI(req.query.uuid);
+    const uuidToCheck = (req.query.uuid);
     console.log("92serverCheckUrl", uuidToCheck)
-    console.log('93Server-SideUrlResult', uuidToCheck, '-->', uuidUsernameMap.hasOwnProperty(uuidToCheck))
+    // console.log('93Server-SideUrlResult', uuidToCheck, '-->', uuidUsernameMap.hasOwnProperty(uuidToCheck))
     const isUUIDConnected = uuidUsernameMap.hasOwnProperty(uuidToCheck);
     res.json({ connected: isUUIDConnected });
 });
@@ -101,29 +104,41 @@ router.get('/getUsername', (req, res) => {
     const uuid = req.query.uuid;
     // Check if the UUID exists in your mapping
     const data = uuidUsernameMap[uuid]
-    console.log('Server103getUsername',data)
-    res.json({ data: data })
-    // if (data) {
-    //     res.json({ data });
-    // } else {
-    //     res.status(404).json({ error: 'Username not found' });
-    // }
+    // console.log('Server103getUsername',data,uuid,uuidUsernameMap)
+    // res.json({ data: data })
+    if (data) {
+        res.json({ data });
+    } else {
+        res.status(404).json({ error: 'Username not found' });
+    }
 });
-
 function generateShortUUID() {
-    let shortUUID;
+    const alphanumericChars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let shortUUID = '';
 
     do {
-        // Generate a full UUID
-        const fullUUID = uuidv4();
-
-        // Extract the first 6 characters from the full UUID
-        shortUUID = fullUUID.substring(0, 6);
-
-        // Check if the short UUID is already in use
+        shortUUID = '';
+        for (let i = 0; i < 6; i++) {
+            shortUUID += alphanumericChars.charAt(Math.floor(Math.random() * alphanumericChars.length));
+        }
     } while (uuidUsernameMap[shortUUID]);
+
     return shortUUID;
 }
+
+// function generateShortUUID() {
+//     let shortUUID;
+
+//     do {
+//         // Generate a full UUID
+//         const fullUUID = uuidv4();
+
+//         // Extract the first 6 characters from the full UUID
+//         shortUUID = fullUUID
+//         // Check if the short UUID is already in use
+//     } while (uuidUsernameMap[shortUUID]);
+//     return shortUUID;
+// }
 
 // // Define a route to delete a UID
 // router.delete('/delete-uuid/:userUUID', (req, res) => {
@@ -142,10 +157,10 @@ function generateShortUUID() {
 // });
 
 router.post('/deleteuuid/', (req, res) => {
-    const userUUID = decodeURI(req.body.uuid);
+    const userUUID = (req.body.uuid);
     if (uuidUsernameMap.hasOwnProperty(userUUID)) {
         delete uuidUsernameMap[userUUID];
-        // console.log("updated serverSide Uuid", uuidUsernameMap)
+        console.log("updated serverSide Uuid", uuidUsernameMap)
         res.status(200).json({ data: true });
     } else {
         // UID not found, return an error

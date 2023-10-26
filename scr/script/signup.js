@@ -65,7 +65,7 @@ email.addEventListener("input", function () {
         pw.disabled = false;
         pw.focus();
         Submit = true;
-    }, doneTypingInterval);
+    }, (doneTypingInterval + 2000));
 });
 email.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
