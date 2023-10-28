@@ -6,7 +6,8 @@ const { v4: uuidv4 } = require('uuid');
 const FileEncryption = require('../scr/script/lock.js');
 const fileEncryption = new FileEncryption('key.txt');
 const uuidUsernameMap = {};
-// uuidUsernameMap['123'] = { username: 'khizar', email: "email" };
+uuidUsernameMap['123'] = { username: 'khizar', email: "email" };
+uuidUsernameMap['523'] = { username: 'Anas', email: "email" };
 const db = require('../db/db');
 // const fileEncryption = new FileEncryption('../scr/script/lock.js');
 // console.log(path.join(__dirname,'../scr/script/lock.js'))
@@ -55,7 +56,7 @@ router.post('/Login', middleware.logIn, async (req, res) => {
             // Either username or email is already connected, send an error response
             res.status(400).json({ error: 'Username or email is already connected' });
         } else {
-            uuidUsernameMap[shortUUID] = { username: result.username, email: result.email };
+            uuidUsernameMap[shortUUID] = { username: result.username, email: result.email, language: result.language};
             console.log("Server user joined", shortUUID)
             res.status(200).json({ url: `/next_page?uuid=${shortUUID}`, u: result.username });
         }
@@ -79,6 +80,7 @@ router.get('/next_page', (req, res) => {
 router.post('/signup', middleware.mySignup, async (req, res) => {
     // const { name, Uname, email, pw, cpw, xie_num } = req.body;
     req.body.pw = fileEncryption.encrypt(req.body.pw)
+    // req.body.language = 'en'
     const result = await db.insertFormData(req.body)
     if (result.success) {
         res.status(200).json({ url: "Login" })

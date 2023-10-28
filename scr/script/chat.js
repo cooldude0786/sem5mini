@@ -5,6 +5,18 @@ const userUUID = encodeURI(getQueryParam('uuid'));
 const connectedUsers = new Map();
 var currentUser = null;
 const chatHistory = {};
+
+
+function showToast(message) {
+    const toastBody = document.querySelector('.toast-body');
+    if (toastBody) {
+        toastBody.textContent = message;
+        $('.toast').toast('show');
+    }
+}
+
+// Example Usage
+
 // Function to add a user to chat history
 function addUserToHistory(uid) {
     if (!chatHistory[uid]) {
@@ -161,7 +173,9 @@ window.addEventListener('beforeunload', function (e) {
 //         console.log(error)
 //     }
 // }
-
+socket.on('Kill', () => {
+    window.location.replace('http://localhost:3000/');
+});
 
 document.getElementById('sendbtn').addEventListener(onclick, () => {
     if (document.getElementById('CharSendValue').value == '') {
@@ -178,9 +192,9 @@ document.getElementById('sendbtn').addEventListener(onclick, () => {
 
 socket.on('userleaved', (newUserUUID) => {
     // console.log('beofre deleting -------------------->', connectedUsers)
-    var element = document.getElementById(newUserUUID.message);
-    console.log(element)
-    element.parentNode.removeChild(element);
+    // var element = document.getElementById(newUserUUID.users);
+    // console.log('-->',newUserUUID)
+    // element.parentNode.removeChild(element);
 
     connectedUsers.delete(newUserUUID.message);
     loop(newUserUUID.users)

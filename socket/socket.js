@@ -4,7 +4,8 @@ const axios = require('axios');
 const { urlencoded } = require('express');
 const connectedUsers = new Set();
 const userSocketMap = new Map();
-// connectedUsers.add('123')
+connectedUsers.add('123')
+connectedUsers.add('523')
 module.exports = (server) => {
     const io = socketIo(server);
     console.log('A user connected');
@@ -17,42 +18,51 @@ module.exports = (server) => {
         socket.on('join', async (userId) => {
             // console.log('at socekt side before encrypt',userId,decodeURIComponent(userId))
             // userId = decodeURI(userId);
-            connectedUsers.add(userId);
-            userSocketMap.set(userId, socket);
+
             console.log('Socket user Added 20 =>', userId);
-            // try {
-            //     axios({
-            //         method: "get",
-            //         url: `http://localhost:3000/checkUuid?uuid=${userId}`,
-            //         // data: formData,
-            //         // headers: { "Content-Type": "multipart/form-data" },
-            //       })
-            //         .then(({ data }) => {
-            //         //   console.log('sdfs',data);
-            //         })
-            //         .catch((err) => {
-            //           console.error(err.toJSON());
-            //         })
-            //     // const response = await axios.get(`http://localhost:3000/checkUuid?uuid=${userId}`);
-            //     // // console.log("Socket ansd",response.data.connected)
-            //     // if (response.data.connected !== true) {
-            //     //     io.emit('closeit');
-            //     //     console.log("Socket 26 runss")
-            //     //     // Handle the case where the UUID doesn't exist
-            //     // }
-            // } catch (error) {
-            //     console.error('28Error making HTTP request: retriving userid');
-            // }
-            const myArray = Array.from(connectedUsers);
+            try {
+                axios({
+                    method: "get",
+                    url: `http://localhost:3000/checkUuid?uuid=${userId}`,
+                    // data: formData,
+                    // headers: { "Content-Type": "multipart/form-data" },
+                })
+                    .then(({ data }) => {
+                        if (data.connected) {
+                            console.log('called if')
+                            connectedUsers.add(userId);
+                            userSocketMap.set(userId, socket);
+                            io.emit('userJoined', Array.from(connectedUsers));
+                        } else {
+                            console.log('called',socket)
+                            socket.emit('Kill', '');
+                        }
+
+                        console.log('checking', data, connectedUsers, userId);
+                        
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    })
+                // const response = await axios.get(`http://localhost:3000/checkUuid?uuid=${userId}`);
+                // // console.log("Socket ansd",response.data.connected)
+                // if (response.data.connected !== true) {
+                //     io.emit('closeit');
+                //     console.log("Socket 26 runss")
+                //     // Handle the case where the UUID doesn't exist
+                // }
+            } catch (error) {
+                console.error('28Error making HTTP request: retriving userid');
+            }
+
             // const lastElement = myArray[myArray.length - 1];
             // console.log("socket side", Array.from(connectedUsers))
             // Store the user's socket with their user ID
-            io.emit('userJoined', Array.from(connectedUsers));
         });
 
 
         // Handle private messages
-        socket.on('private message', ({ recipientId , message, userUUID }) => {
+        socket.on('private message', ({ recipientId, message, userUUID }) => {
             // Get the recipient's socket based on their user ID
             console.log('Out', recipientId, userUUID, message)
             const recipientSocket = userSocketMap.get(recipientId);

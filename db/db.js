@@ -1,5 +1,6 @@
 
 const mongoose = require('mongoose');
+const { use } = require('../routes/routes');
 
 // MongoDB connection URL
 const mongoURL = 'mongodb://localhost:27017/admin'; // Replace with your database URL
@@ -26,6 +27,7 @@ const formDataSchema = new mongoose.Schema({
     email: String,
     pw: String,
     xie_num: String,
+    language: String,
 });
 
 const UserModel = mongoose.model("UserAccountDetails", formDataSchema); // Change this to your collection name
@@ -110,9 +112,9 @@ const loginWithEmailAndPassword = async (email, password) => {
             if (!user) {
                 return { success: false, message: 'Invalid email or password' };
             }
-
-            // Return a success message and the username
-            return { success: true, message: 'Login successful', username: user.Uname, email: user.email };
+            console.log('db',user.language)
+            // Return a success message and the username and the language
+            return { success: true, message: 'Login successful', username: user.Uname, email: user.email,language: user.language };
         } else {
             // Input does not contain @student.xavier.ac.in, so treat it as a username
             const emailExists = await checkUnameExists(email);
@@ -127,7 +129,7 @@ const loginWithEmailAndPassword = async (email, password) => {
             }
 
             // Return a success message and the username
-            return { success: true, message: 'Login successful', username: user.Uname, email: user.email };
+            return { success: true, message: 'Login successful', username: user.Uname, email: user.email,language: user.language };
         }
 
         // Attempt to find a user with the given email and password
