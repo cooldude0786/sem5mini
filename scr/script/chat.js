@@ -5,7 +5,7 @@ const userUUID = encodeURI(getQueryParam('uuid'));
 const connectedUsers = new Map();
 var currentUser = null;
 const chatHistory = {};
-
+var langauge = 'en';
 
 function showToast(message) {
     const toastBody = document.querySelector('.toast-body');
@@ -102,6 +102,31 @@ function getQueryParam(name) {
 const socket = io({ query: { uuid: userUUID } });
 socket.on('connect', async () => {
     socket.emit('join', encodeURI(userUUID));
+    const url = `/getUnameAndLanhuage?uuid=${(userUUID).trim()}`;
+    fetch(url)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data)
+            // Handle the response data here, which should contain the username. 
+            if (data.status) {
+
+                document.getElementById('uNmae').innerText = data.uName;
+                document.getElementById('Lang').innerText = data.ln;
+                langauge = data.ln;
+                // connectedUsers.set(uuid, data.data.username)
+                // console.log('found', uuid, data.data.username)
+                // document.ge/tElementById('ContactList').innerHTML += `<li onclick=clicledme(this.id) class="lChat" id="${uuid}"><span class="LChat">${data.data.username}</span></li>`
+            }
+            // console.log('Username:', connectedUsers);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     // const url = `http://localhost:3000/checkUuid?uuid=${encodeURI(userUUID)}`
     // fetch(url)
     //     .then((response) => {
@@ -192,13 +217,12 @@ document.getElementById('sendbtn').addEventListener(onclick, () => {
 
 socket.on('userleaved', (newUserUUID) => {
     // console.log('beofre deleting -------------------->', connectedUsers)
-    // var element = document.getElementById(newUserUUID.users);
-    // console.log('-->',newUserUUID)
-    // element.parentNode.removeChild(element);
+    var element = document.getElementById(newUserUUID.message);
+    console.log(element)
+    element.parentNode.removeChild(element);
 
     connectedUsers.delete(newUserUUID.message);
     loop(newUserUUID.users)
-    // console.log('after deleting -------------------->', connectedUsers)
 });
 
 

@@ -6,8 +6,8 @@ const { v4: uuidv4 } = require('uuid');
 const FileEncryption = require('../scr/script/lock.js');
 const fileEncryption = new FileEncryption('key.txt');
 const uuidUsernameMap = {};
-uuidUsernameMap['123'] = { username: 'khizar', email: "email" };
-uuidUsernameMap['523'] = { username: 'Anas', email: "email" };
+uuidUsernameMap['123'] = { username: 'khizar', email: "email", language:"en" };
+uuidUsernameMap['523'] = { username: 'Anas', email: "email", language:"en" };
 const db = require('../db/db');
 // const fileEncryption = new FileEncryption('../scr/script/lock.js');
 // console.log(path.join(__dirname,'../scr/script/lock.js'))
@@ -101,7 +101,13 @@ router.get('/checkUuid', (req, res) => {
     res.json({ connected: isUUIDConnected });
 });
 
+router.get('/getUnameAndLanhuage',(req,res)=>{
+    const id  = (req.query.uuid);
+    const {username , language} = uuidUsernameMap[id]
+    return res.json({uName:username,ln:language,status:true}).status(200)
+    // res.status(200).json({id:id})
 
+});
 router.get('/getUsername', (req, res) => {
     const uuid = req.query.uuid;
     // Check if the UUID exists in your mapping
