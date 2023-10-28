@@ -12,48 +12,60 @@
     color: black;
     background: white;
 ">this is btn</button> -->
-    <div class="MainWrapp">
-        <div class="inWrap">
-            <div class="list">
-                <div class="CName">.
-                    <div class="span">
-                        L@&pi; &COPY;H@T
+<div class="MainWrapp">
+    <div class="inWrap">
+        <div class="list">
+            <div class="CName">.
+                <div class="span">
+                    L@&pi; &COPY;H@T
+                </div>
+            </div>
+            <div class="FrnName">
+                Friends
+            </div>
+            <div class="search-out">
+                <input type="text" name="search" id="search" placeholder="Search">
+            </div>
+            <div class="contactList">
+                <ul id="ContactList">
+                    <!-- <li><span>Sample</span></li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="chats">
+        <div class="chatWrap">
+            <div class="uName">
+                <div class="username">khizar</div>
+                <div class="dropdown">
+                    <button class="dropbtn">En</button>
+                    <div class="dropdown-content">
+                        <span>English</span>
+                        <span>Hindi</span>
+                        <span>Marathi</span>
                     </div>
                 </div>
-                <div class="FrnName">
-                    Friends
-                </div>
-                <div class="search-out">
-                    <input type="text" name="search" id="search" placeholder="Search">
-                </div>
-                <div class="contactList">
-                    <ul id="ContactList">
-                        <!-- <li><span>Sample</span></li> -->
-                    </ul>
-                </div>
             </div>
+            <img src="../img/c5.png" alt="" id="ChatBoxImage"
+                style="    width: inherit;height: inherit;padding-right: 130px;background-color: inherit;">
+            <ul class="chatBox" id="chatBox" style="display: none;">
+                <li class="lChat"><span class="LChat">abcd1</span></li>
+                <li class="lChat"><span class="LChat">abcd1</span></li>
+                <li class="lChat"><span class="LChat">abcd1</span></li>
+                <li class="lChat"><span class="LChat">abcd1</span></li>
+                <li class="lChat"><span class="LChat">abcd1</span></li>
+            </ul>
         </div>
-        <div class="chats">
-            <div class="chatWrap">
-                <img src="../img/c5.png" alt="" id="ChatBoxImage">
-                <ul class="chatBox" id="chatBox" style="display: none;">
-                   <li class="lChat"><span class="LChat">abcd1</span></li> 
-                   <li class="lChat"><span class="LChat">abcd1</span></li> 
-                   <li class="lChat"><span class="LChat">abcd1</span></li> 
-                   <li class="lChat"><span class="LChat">abcd1</span></li> 
-                   <li class="lChat"><span class="LChat">abcd1</span></li> 
-                </ul> 
-            </div>
-            <div class="sendBox">
-                <input class="inp" id="CharSendValue" type="text" value="">
-                <input class="btn-sub" type="submit" id="sendbtn" onclick="sendMsg()" value="">
-            </div>
+        <div class="sendBox">
+            <input class="inp" id="CharSendValue" type="text" value="">
+            <input class="btn-sub" type="submit" id="sendbtn" onclick="sendMsg()" value="">
         </div>
     </div>
-    </div>
+</div>
+</div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/script/chat.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/script/chat.js"></script>
 </body>
 
 </html>

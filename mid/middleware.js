@@ -18,6 +18,7 @@ const logIn = (req, res, next) => {
 
 const mySignup = (req, res, next) => {
     const { name, Uname, email, pw, cpw, xie_num } = req.body;
+    req.body.language = 'en'
     if (pw !== cpw) {
         // cpw.value = ""
         // cpw.placeholder = "Password Doesn't Match"

@@ -191,13 +191,13 @@
 
 .MainWrapp .chats .sendBox .btn-sub {
     border-radius: 14px;
-    width: 7%;
-    height: 49%;
+    width: 12%;
+    height: 70%;
     border: none;
     background-color: aquamarine;
     font-size: 17px;
     background-image: url(../img/send.png);
-    background-size: cover;
+    background-size: contain;
     cursor: pointer;
 }
 
@@ -210,15 +210,16 @@
     max-width: 90%;
     background-color: transparent;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     padding: 30px 66px;
-    margin-right: 185px;
+    /* margin-right: 185px; */
     justify-content: center;
+    position: relative;
 }
 
 .MainWrapp .chats .chatWrap .chatBox {
     padding: 39px 0;
-    height: 89%;
+    height: 76%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.1);
     border-radius: 31px;
@@ -248,17 +249,21 @@
     border-radius: 15px 15px 15px 0;
     justify-content: flex-end;
 }
-.lChat{
+
+.lChat {
     justify-content: flex-start;
 }
-.rChat{
+
+.rChat {
     justify-content: flex-end;
 }
+
 .RChat {
     display: flex;
     border-radius: 15px 15px 0px 15px;
     justify-content: flex-end;
 }
+
 .MainWrapp .chats .chatWrap .chatBox::-webkit-scrollbar {
     width: 20px;
 }
@@ -274,4 +279,94 @@
 .MainWrapp .chats .chatWrap .chatBox::-webkit-scrollbar-track {
     background-color: black;
     border-radius: 0px 16px 16px 0px !important;
+}
+
+
+.uName {
+    position: absolute;
+    right: 100px;
+    top: 39px;
+    min-width: 136px;
+    height: 39px;
+    background-color: #6c757d;
+    color: #f1fffb;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 6px 17px;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.uName div {
+    background-color: inherit;
+}
+
+
+.dropbtn {
+    background-color: inherit;
+    color: inherit;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+}
+.dropbtn::after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+}
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    background-color: inherit;
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    top: 38px;
+    right: -17px;
+    display: none;
+    position: absolute;
+    background-color: inherit;
+    min-width: fit-content;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content span {
+    color: inherit;
+    background-color: inherit;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    width: fit-content;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content span:hover {
+    color: #6c757d;
+    background-color: #f1fffb;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    /* background-color: #3e8e41; */
 }
