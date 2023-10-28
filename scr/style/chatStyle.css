@@ -352,7 +352,7 @@
     text-decoration: none;
     display: block;
     cursor: pointer;
-    width: fit-content;
+    width: 75%;
 }
 
 /* Change color of dropdown links on hover */

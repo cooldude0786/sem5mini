@@ -34,7 +34,7 @@ module.exports = (server) => {
                             userSocketMap.set(userId, socket);
                             io.emit('userJoined', Array.from(connectedUsers));
                         } else {
-                            console.log('called',socket)
+                            // console.log('called',socket)
                             socket.emit('Kill', '');
                         }
 
@@ -85,7 +85,7 @@ module.exports = (server) => {
                         connectedUsers.delete(userUUID)
                         userSocketMap.delete(userUUID);
                         // io.emit('userleaved', Array.from(connectedUsers))
-                        io.emit('userleaved', { users: Array.from(connectedUsers) });
+                        io.emit('userleaved', { users: Array.from(connectedUsers) , message:userUUID});
                         console.log(`Socket user ==> ${(userUUID)} is about to disconnect 84`);
                         console.log('user list at socekt', connectedUsers)
                         // console.log('Successfully deleted UUID on the server');
