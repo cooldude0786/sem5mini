@@ -379,7 +379,6 @@
 .keyboard {
     display: none;
     flex-direction: column;
-    margin-bottom: 20px;
     height: 33vh;
 
 }
