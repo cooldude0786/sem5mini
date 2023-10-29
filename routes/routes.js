@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 const middleware = require('../mid/middleware'); // Update the import path for middleware
 const path = require("path");
+const translate = require('translate-google');
 const { v4: uuidv4 } = require('uuid');
 const FileEncryption = require('../scr/script/lock.js');
 const fileEncryption = new FileEncryption('key.txt');
 const uuidUsernameMap = {};
-uuidUsernameMap['123'] = { username: 'khizar', email: "email", language:"en" };
-uuidUsernameMap['523'] = { username: 'Anas', email: "email", language:"en" };
+// uuidUsernameMap['123'] = { username: 'khizar', email: "email", language: "en" };
+// uuidUsernameMap['523'] = { username: 'Anas', email: "email", language: "en" };
 const db = require('../db/db');
 // const fileEncryption = new FileEncryption('../scr/script/lock.js');
 // console.log(path.join(__dirname,'../scr/script/lock.js'))
@@ -43,7 +44,7 @@ router.post('/Login', middleware.logIn, async (req, res) => {
     var password = fileEncryption.encrypt((req.body.pw).trim());
     const result = await db.loginWithEmailAndPassword(username, password)
     if (result.success) {
-        let shortUUID =  fileEncryption.encrypt(generateShortUUID());
+        let shortUUID = fileEncryption.encrypt(generateShortUUID());
         shortUUID = encodeURIComponent(shortUUID)
         // uuidUsernameMap[shortUUID] = result.username;
         const existingUUID = Object.keys(uuidUsernameMap).find((key) => {
@@ -56,7 +57,7 @@ router.post('/Login', middleware.logIn, async (req, res) => {
             // Either username or email is already connected, send an error response
             res.status(400).json({ error: 'Username or email is already connected' });
         } else {
-            uuidUsernameMap[shortUUID] = { username: result.username, email: result.email, language: result.language};
+            uuidUsernameMap[shortUUID] = { username: result.username, email: result.email, language: result.language };
             console.log("Server user joined", shortUUID)
             res.status(200).json({ url: `/next_page?uuid=${shortUUID}`, u: result.username });
         }
@@ -64,7 +65,7 @@ router.post('/Login', middleware.logIn, async (req, res) => {
         // Send an error message to the client
         res.status(400).json({ error: 'Invalid username or password' });
     }
-    console.log('server all user ',uuidUsernameMap)
+    console.log('server all user ', uuidUsernameMap)
 });
 
 // Define a route for the next page
@@ -93,6 +94,31 @@ router.get('/SignUp', (req, res) => {
     res.sendFile(path.join(__dirname, `../scr/pages/signup.html`));
 });
 
+router.get('/changeLang', async (req, res) => {
+    const { uuid, ln } = req.query;
+    let obj = { code: 0, status: false };
+    if (uuidUsernameMap.hasOwnProperty(uuid)) {
+        const { username, email } = uuidUsernameMap[uuid]
+        const result = await db.updateLanguage(email, username, ln)
+        if (result !== null) {
+            obj.status = true;
+            obj.username = username
+            obj.email = email
+            obj.code = 200;
+            obj.data = result;
+        } else {
+            obj.status = false;
+            obj.code = 200;
+            obj.action = true;
+        }
+    } else {
+        obj.code = 404;
+        obj.status = false;
+    }
+    res.status(obj.code).json(obj);
+});
+
+
 router.get('/checkUuid', (req, res) => {
     const uuidToCheck = (req.query.uuid);
     console.log("92serverCheckUrl", uuidToCheck)
@@ -101,10 +127,15 @@ router.get('/checkUuid', (req, res) => {
     res.json({ connected: isUUIDConnected });
 });
 
-router.get('/getUnameAndLanhuage',(req,res)=>{
-    const id  = (req.query.uuid);
-    const {username , language} = uuidUsernameMap[id]
-    return res.json({uName:username,ln:language,status:true}).status(200)
+router.get('/getUnameAndLanhuage', (req, res) => {
+    const id = (req.query.uuid);
+    if (uuidUsernameMap.hasOwnProperty(id)) {
+        const { username, language } = uuidUsernameMap[id]
+        return res.json({ uName: username, ln: language, status: true }).status(200)
+    } else {
+        // UID not found, return an error
+        res.status(200).json({ status: false });
+    }
     // res.status(200).json({id:id})
 
 });
@@ -163,6 +194,18 @@ function generateShortUUID() {
 //     // }
 //     res.json({sucess: "done"+userUUID})
 // });
+
+router.get('/ChangeLanguage', async (req, res) => {
+    try {
+        const { msg, ctype, Ttype } = req.query;
+        let translatedText;
+        translatedText = await translate(msg, { from: ctype, to: Ttype });
+        res.status(200).json({status:true,msg:translatedText})
+    } catch (error) {
+        console.error('Translation error:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 router.post('/deleteuuid/', (req, res) => {
     const userUUID = (req.body.uuid);

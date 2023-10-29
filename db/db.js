@@ -1,6 +1,6 @@
 
 const mongoose = require('mongoose');
-const { use } = require('../routes/routes');
+// const { use } = require('../routes/routes');
 
 // MongoDB connection URL
 const mongoURL = 'mongodb://localhost:27017/admin'; // Replace with your database URL
@@ -112,9 +112,9 @@ const loginWithEmailAndPassword = async (email, password) => {
             if (!user) {
                 return { success: false, message: 'Invalid email or password' };
             }
-            console.log('db',user.language)
+            console.log('db', user.language)
             // Return a success message and the username and the language
-            return { success: true, message: 'Login successful', username: user.Uname, email: user.email,language: user.language };
+            return { success: true, message: 'Login successful', username: user.Uname, email: user.email, language: user.language };
         } else {
             // Input does not contain @student.xavier.ac.in, so treat it as a username
             const emailExists = await checkUnameExists(email);
@@ -129,7 +129,7 @@ const loginWithEmailAndPassword = async (email, password) => {
             }
 
             // Return a success message and the username
-            return { success: true, message: 'Login successful', username: user.Uname, email: user.email,language: user.language };
+            return { success: true, message: 'Login successful', username: user.Uname, email: user.email, language: user.language };
         }
 
         // Attempt to find a user with the given email and password
@@ -141,9 +141,33 @@ const loginWithEmailAndPassword = async (email, password) => {
 };
 
 
+const updateLanguage = async (email, username, newLanguage) => {
+    try {
+        const filter = { email: email, Uname: username };
+        const update = { language: newLanguage };
+        const options = { new: true }; // To return the modified document
+
+        const result = await UserModel.findOneAndUpdate(filter, update, options);
+
+        if (result) {
+            console.log("DBUpdated document:", result);
+            return result;
+        } else {
+            console.log("DBNo document found for the provided filter.");
+            return null;
+        }
+    } catch (error) {
+        // Handle error
+        console.error('DBError occurred while updating language:', error);
+        return null;
+    }
+};
+
+
 
 
 module.exports = {
     insertFormData,
     loginWithEmailAndPassword,
+    updateLanguage,
 };

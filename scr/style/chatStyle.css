@@ -21,6 +21,7 @@
     height: 100vh;
     display: flex;
     justify-content: center;
+    transition: height 0.4s;
 }
 
 .MainWrapp .inWrap {
@@ -188,7 +189,6 @@
     letter-spacing: 0.8px;
     word-spacing: 1.5px;
 }
-
 .MainWrapp .chats .sendBox .btn-sub {
     border-radius: 14px;
     width: 12%;
@@ -198,8 +198,11 @@
     font-size: 17px;
     background-image: url(../img/send.png);
     background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     cursor: pointer;
 }
+
 
 .MainWrapp .chats .sendBox .inp:focus-visible {
     outline: none;
@@ -367,6 +370,45 @@
 }
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {
-    /* background-color: #3e8e41; */
+/* .dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+} */
+
+
+
+.keyboard {
+    display: none;
+    flex-direction: column;
+    margin-bottom: 20px;
+    height: 33vh;
+
+}
+
+.key-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.key {
+    padding: 10px 40px;
+    font-size: 16px;
+    background-color: #ffffff;
+    border: 1px solid #999999;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.key-wide {
+    /* Adjust width as needed */
+    width: 100px;
+}
+
+textarea {
+    width: 300px;
+    height: 150px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #999999;
+    border-radius: 5px;
 }

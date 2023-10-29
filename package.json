@@ -23,6 +23,7 @@
     "node-fetch-cjs": "^3.3.2",
     "nodemon": "^3.0.1",
     "socket.io": "^4.7.2",
+    "translate-google": "^1.5.0",
     "uuid": "^9.0.1"
   }
 }

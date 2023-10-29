@@ -6,7 +6,42 @@ const connectedUsers = new Map();
 var currentUser = null;
 const chatHistory = {};
 var langauge = 'en';
+// Get all the span elements inside the div
+let spans = document.querySelectorAll(".dropdown-content span");
 
+// Loop through each span element and add a click event listener
+for (let span of spans) {
+    span.addEventListener("click", function () {
+        const url = `/changeLang?uuid=${userUUID}&ln=${this.id}`;
+        fetch(url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                // Handle the response data here, which should contain the username. 
+                if (data.status) {
+                    langauge = data.data.language;
+                    document.getElementById('Lang').innerText = langauge;
+                }
+                // console.log('Username:', connectedUsers);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        if (this.id == 'hi') {
+            document.getElementById('MainWrapp').style.height = '67vh';
+            document.getElementById('keyboard').style.display = 'flex';
+        } else {
+            document.getElementById('MainWrapp').style.height = '100vh';
+            document.getElementById('keyboard').style.display = 'none';
+
+
+        }
+    });
+}
 function showToast(message) {
     const toastBody = document.querySelector('.toast-body');
     if (toastBody) {
@@ -114,13 +149,20 @@ socket.on('connect', async () => {
             console.log(data)
             // Handle the response data here, which should contain the username. 
             if (data.status) {
-
                 document.getElementById('uNmae').innerText = data.uName;
                 document.getElementById('Lang').innerText = data.ln;
                 langauge = data.ln;
+                if (langauge == 'hi') {
+                    document.getElementById('MainWrapp').style.height = '67vh';
+                    document.getElementById('keyboard').style.display = 'flex';
+                }
                 // connectedUsers.set(uuid, data.data.username)
                 // console.log('found', uuid, data.data.username)
                 // document.ge/tElementById('ContactList').innerHTML += `<li onclick=clicledme(this.id) class="lChat" id="${uuid}"><span class="LChat">${data.data.username}</span></li>`
+            }
+            else {
+                window.location.replace('http://localhost:3000/');
+
             }
             // console.log('Username:', connectedUsers);
         })
@@ -257,13 +299,16 @@ function sendMsg() {
 
 function sendPrivateMessage(recipientId, message) {
     console.log('send messg', typeof recipientId, typeof userUUID, message)
-    socket.emit('private message', { recipientId, userUUID, message });
+    socket.emit('private message', { recipientId, userUUID, message, langauge });
 }
 
 // Listening for a private message
-socket.on('private message', ({ sender, msg }) => {
+socket.on('private message', async ({ sender, msg, senderLang }) => {
     // Handle the private message here
-    addMessageToHistoryOnRecived(sender, 'L', msg)
+    if (langauge !== senderLang) {
+        msg = await fetchData(msg, senderLang)
+    }
+    addMessageToHistoryOnRecived(sender, 'L', (msg))
     // addMessageToHistory(senderId,'L',message)
     // console.log(`Private message from ${sender}: ${msg}`);
 });
@@ -275,4 +320,63 @@ inputElement.addEventListener('keypress', function (e) {
     if (e.key === 'Enter') {
         sendMsg();
     }
+});
+async function fetchData(msg, senderLang) {
+    try {
+        const url = `/ChangeLanguage?msg=${msg}&ctype=${senderLang}&Ttype=${langauge}`;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        // Handle the response data here, which should contain the username. 
+        if (data.status) {
+            return data.msg;
+        }
+        // console.log('Username:', connectedUsers);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+
+
+const keyboard2 = document.getElementById('keyboard2');
+
+const enterKey = document.getElementById('enter');
+
+const outputTextArea = document.getElementById('CharSendValue')
+
+enterKey.addEventListener('click', () => {
+    outputTextArea.value += '\n'; // Append a newline character to simulate Enter key
+    outputTextArea.focus()
+
+});
+
+const backspaceKey = document.getElementById('backspace');
+const spaceKey = document.getElementById('space');
+
+backspaceKey.addEventListener('click', () => {
+    outputTextArea.value = outputTextArea.value.slice(0, -1); // Remove last character
+    outputTextArea.focus()
+
+});
+
+spaceKey.addEventListener('click', () => {
+  outputTextArea.value  += ' ';
+  outputTextArea.focus()
+
+});
+
+const keys = document.querySelectorAll('.key');
+
+keys.forEach(key => {
+    key.addEventListener('click', () => {
+        outputTextArea.value += key.textContent;
+        outputTextArea.focus()
+    });
 });

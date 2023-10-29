@@ -4,8 +4,8 @@ const axios = require('axios');
 const { urlencoded } = require('express');
 const connectedUsers = new Set();
 const userSocketMap = new Map();
-connectedUsers.add('123')
-connectedUsers.add('523')
+// connectedUsers.add('123')
+// connectedUsers.add('523')
 module.exports = (server) => {
     const io = socketIo(server);
     console.log('A user connected');
@@ -39,7 +39,7 @@ module.exports = (server) => {
                         }
 
                         console.log('checking', data, connectedUsers, userId);
-                        
+
                     })
                     .catch((err) => {
                         console.error(err);
@@ -62,12 +62,12 @@ module.exports = (server) => {
 
 
         // Handle private messages
-        socket.on('private message', ({ recipientId, message, userUUID }) => {
+        socket.on('private message', ({ recipientId, message, userUUID, langauge }) => {
             // Get the recipient's socket based on their user ID
-            console.log('Out', recipientId, userUUID, message)
+            // console.log('Out', recipientId, userUUID, message, langauge)
             const recipientSocket = userSocketMap.get(recipientId);
             if (recipientSocket) {
-                recipientSocket.emit('private message', { sender: userUUID, msg: message });
+                recipientSocket.emit('private message', { sender: userUUID, msg: message, senderLang: langauge });
             } else {
                 console.log('Error happened');
             }
@@ -85,7 +85,7 @@ module.exports = (server) => {
                         connectedUsers.delete(userUUID)
                         userSocketMap.delete(userUUID);
                         // io.emit('userleaved', Array.from(connectedUsers))
-                        io.emit('userleaved', { users: Array.from(connectedUsers) , message:userUUID});
+                        io.emit('userleaved', { users: Array.from(connectedUsers), message: userUUID });
                         console.log(`Socket user ==> ${(userUUID)} is about to disconnect 84`);
                         console.log('user list at socekt', connectedUsers)
                         // console.log('Successfully deleted UUID on the server');

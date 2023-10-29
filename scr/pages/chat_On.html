@@ -6,66 +6,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lets Begin's</title>
     <link rel="stylesheet" href="../style/chatStyle.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
 </head>
 
-<!-- <body><button onclick="callit()" id="callit" style="
+<body>
+    <!-- <button onclick="callit()" id="callit" style="
     color: black;
     background: white;
 ">this is btn</button> -->
-<div class="MainWrapp">
-    <div class="inWrap">
-        <div class="list">
-            <div class="CName">.
-                <div class="span">
-                    L@&pi; &COPY;H@T
-                </div>
-            </div>
-            <div class="FrnName">
-                Friends
-            </div>
-            <div class="search-out">
-                <input type="text" name="search" id="search" placeholder="Search">
-            </div>
-            <div class="contactList">
-                <ul id="ContactList">
-                    <!-- <li><span>Sample</span></li> -->
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="chats">
-        <div class="chatWrap">
-            <div class="uName">
-                <div class="username" id="uNmae"></div>
-                <div class="dropdown">
-                    <button class="dropbtn" id="Lang"></button>
-                    <div class="dropdown-content">
-                        <span>English</span>
-                        <span>Hindi</span>
-                        <span>Marathi</span>
+    <div class="MainWrapp" id="MainWrapp">
+        <div class="inWrap">
+            <div class="list">
+                <div class="CName">.
+                    <div class="span">
+                        L@&pi; &COPY;H@T
                     </div>
                 </div>
+                <div class="FrnName">
+                    Friends
+                </div>
+                <div class="search-out">
+                    <input type="text" name="search" id="search" placeholder="Search">
+                </div>
+                <div class="contactList">
+                    <ul id="ContactList">
+                        <!-- <li><span>Sample</span></li> -->
+                    </ul>
+                </div>
             </div>
-            <img src="../img/c5.png" alt="" id="ChatBoxImage"
-                style="    width: inherit;height: inherit;padding-right: 130px;background-color: inherit;">
-            <ul class="chatBox" id="chatBox" style="display: none;">
-                <li class="lChat"><span class="LChat">abcd1</span></li>
-                <li class="lChat"><span class="LChat">abcd1</span></li>
-                <li class="lChat"><span class="LChat">abcd1</span></li>
-                <li class="lChat"><span class="LChat">abcd1</span></li>
-                <li class="lChat"><span class="LChat">abcd1</span></li>
-            </ul>
         </div>
-        <div class="sendBox">
-            <input class="inp" id="CharSendValue" type="text" value="">
-            <input class="btn-sub" type="submit" id="sendbtn" onclick="sendMsg()" value="">
+        <div class="chats">
+            <div class="chatWrap">
+                <div class="uName">
+                    <div class="username" id="uNmae"></div>
+                    <div class="dropdown">
+                        <button class="dropbtn" id="Lang"></button>
+                        <div class="dropdown-content">
+                            <span id="en">English</span>
+                            <span id="hi">Hindi</span>
+                            <span id="mr">Marathi</span>
+                        </div>
+                    </div>
+                </div>
+                <img src="../img/c5.png" alt="" id="ChatBoxImage"
+                    style="    width: inherit;height: inherit;padding-right: 130px;background-color: inherit;">
+                <ul class="chatBox" id="chatBox" style="display: none;">
+                    <li class="lChat"><span class="LChat">abcd1</span></li>
+                    <li class="lChat"><span class="LChat">abcd1</span></li>
+                    <li class="lChat"><span class="LChat">abcd1</span></li>
+                    <li class="lChat"><span class="LChat">abcd1</span></li>
+                    <li class="lChat"><span class="LChat">abcd1</span></li>
+                </ul>
+            </div>
+            <div class="sendBox">
+                <input class="inp" id="CharSendValue" type="text" value="">
+                <input class="btn-sub" type="submit" id="sendbtn" onclick="sendMsg()" value="">
+            </div>
         </div>
     </div>
-</div>
-</div>
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="/script/chat.js"></script>
+    </div>
+    <div class="keyboard" id="keyboard">
+        <div class="key-row">
+            <button class="key">अ</button>
+            <button class="key">आ</button>
+            <button class="key">इ</button>
+            <button class="key">ई </button>
+            <button class="key">उ</button>
+            <button class="key">ऊ</button>
+            <button class="key">ऋ</button>
+            <button class="key">ए</button>
+            <button class="key">ऐ</button>
+            <button class="key">ओ</button>
+            <button class="key">औ</button>
+            <button class="key">अं</button>
+            <button class="key">अः</button>
+            <button class="key">क</button>
+        </div>
+        <div class="key-row">
+            <button class="key">ख</button>
+            <button class="key">ग</button>
+            <button class="key">घ</button>
+            <button class="key">ङ</button>
+            <button class="key">च</button>
+            <button class="key">छ</button>
+            <button class="key">ज</button>
+            <button class="key">झ</button>
+            <button class="key">ञ</button>
+            <button class="key">ट</button>
+            <button class="key">ठ</button>
+            <button class="key">ड</button>
+            <button class="key">ढ</button>
+            <button class="key">ण</button>
+        </div>
+        <div class="key-row">
+            <button class="key">त</button>
+            <button class="key">थ</button>
+            <button class="key">द</button>
+            <button class="key">ध</button>
+            <button class="key">न</button>
+            <button class="key">प</button>
+            <button class="key">फ</button>
+            <button class="key">ब</button>
+            <button class="key">भ</button>
+            <button class="key">म</button>
+            <button class="key">य</button>
+            <button class="key">र</button>
+            <button class="key">ल</button>
+        </div>
+        <div class="key-row">
+            <button class="key">व</button>
+            <button class="key">श</button>
+            <button class="key">ष</button>
+            <button class="key">स</button>
+            <button class="key">ह</button>
+            <button class="key">क्ष</button>
+            <button class="key">त्र</button>
+            <button class="key">ज्ञ</button>
+            <button class="key">ा</button>
+            <button class="key">ि</button>
+            <button class="key">ी</button>
+            <button class="key">ु</button>
+        </div>
+        <div class="key-row">
+            <button class="key">ू</button>
+            <button class="key">ृ</button>
+            <button class="key">ॄ</button>
+            <button class="key">ॅ</button>
+            <button class="key">ॆ</button>
+            <button class="key">े</button>
+            <button class="key">ै</button>
+            <button class="key">ॉ</button>
+            <button class="key">ॊ</button>
+            <button class="key">ो</button>
+            <button class="key">ौ</button>
+        </div>
+        <div class="key-row">
+            <button class="key-wide key" id="backspace">&#9003;</button>
+            <button class="key-wide key" id="space">Space</button>
+            <button class="key-wide key" id="enter">Enter</button>
+        </div>
+        <!-- Add more key rows as needed -->
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/script/chat.js"></script>
 </body>
 
 </html>
