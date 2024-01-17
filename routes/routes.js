@@ -44,8 +44,8 @@ router.post('/Login', middleware.logIn, async (req, res) => {
     var password = fileEncryption.encrypt((req.body.pw).trim());
     const result = await db.loginWithEmailAndPassword(username, password)
     if (result.success) {
-        let shortUUID = fileEncryption.encrypt(generateShortUUID());
-        shortUUID = encodeURIComponent(shortUUID)
+        // let shortUUID = fileEncryption.encrypt(generateShortUUID());
+        let shortUUID = encodeURIComponent(generateShortUUID())
         // uuidUsernameMap[shortUUID] = result.username;
         const existingUUID = Object.keys(uuidUsernameMap).find((key) => {
             // console.log('48 server',key)

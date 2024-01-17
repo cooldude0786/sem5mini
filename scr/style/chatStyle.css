@@ -69,12 +69,12 @@
 
 .MainWrapp .inWrap .list .CName .span::before {
     content: '';
-    height: 25px;
+    height: 36px;
     width: 3px;
     left: 40px;
     background-color: black;
     position: absolute;
-    top: 50%;
+    top: 58%;
     transform: translateY(-50%);
     border-radius: 19px;
 }

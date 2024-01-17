@@ -1,5 +1,5 @@
 let typingTimer;
-const doneTypingInterval = 1000; // seconds
+const doneTypingInterval = 2000; // seconds
 const Name = document.getElementById("name")
 const Uname = document.getElementById("Uname")
 const email = document.getElementById("email")

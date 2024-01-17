@@ -1,35 +1,90 @@
-*{
+* {
     padding: 0;
     margin: 0;
 }
-body{
+
+@keyframes slideInLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRigth {
+    0% {
+        transform: translateX(+100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes popup {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+body {
     background-color: rgb(14 14 14);
     position: relative;
 }
+
 /* In your CSS file (home.css) */
 #myImage1 {
     position: absolute;
+    animation: 1.7s ease-out 0s 1 slideInLeft;
     left: calc(0px - 170px);
     top: -12px;
     height: 46.4px;
     width: 188.7px;
     z-index: -1;
 }
+
 #myImage2 {
     position: absolute;
     top: calc(0px - 134px);
     right: calc(0px - 141px);
     height: 144.8px;
     width: 275.2px;
+    animation: 1.7s ease-out 0s 1 slideInRigth;
 }
+
+#myImage3 {
+    position: absolute;
+    right: calc(0px - 169px);
+    bottom: 50px;
+    height: 46.4px;
+    width: 188.7px;
+    animation: 1.7s ease-out 0s 1 slideInRigth;
+    z-index: -1;
+}
+
 #myImage4 {
     position: absolute;
     left: -359px;
     bottom: 50px;
-    height: 46.4px; /* Set the height of the image */
-    width: 188.7px; /* Set the width of the image */
+    height: 46.4px;
+    /* Set the height of the image */
+    width: 188.7px;
+    /* Set the width of the image */
+    animation: 1.7s ease-out 0s 1 slideInLeft;
+
 }
-.outer{
+
+.outer {
     width: 100vw;
     display: flex;
     justify-content: center;
@@ -38,7 +93,8 @@ body{
     padding-top: 60px;
     z-index: -1;
 }
-.outer .container{
+
+.outer .container {
     width: 39%;
     height: 520px;
     background-color: #01c37d;
@@ -49,24 +105,28 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: 1.7s ease-in 0s 1 popup;
 }
-.outer .container .outer-wrap{
-height: 60%;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: space-evenly;
+
+.outer .container .outer-wrap {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
 }
-.ft-33{
+
+.ft-33 {
     font-size: 33.7pt;
     font-family: myFont;
 }
+
 @font-face {
     font-family: myFont;
     src: url(Pixelify_Sans/PixelifySans-VariableFont_wght.ttf);
-  }
+}
 
-.row1{
+.row1 {
     display: flex;
     font-size: 10pt;
     /* justify-content: space-between; */
@@ -75,7 +135,8 @@ justify-content: space-evenly;
     height: 33px;
     align-items: center;
 }
-.row input{
+
+.row input {
     height: 40px;
     width: 100%;
     color: #01c37d;
@@ -87,26 +148,32 @@ justify-content: space-evenly;
     padding: 0 0px;
     text-align: center;
 }
-.row input::placeholder{
+
+.row input::placeholder {
     color: #24503f;
 
 }
-.row input:focus-visible{
+
+.row input:focus-visible {
     outline: none;
 }
-.row a{
+
+.row a {
     text-decoration: none;
     color: inherit;
     transition: font-size 0.2s ease-in;
 }
-.row a:hover{
+
+.row a:hover {
     font-size: 20px;
 }
+
 /* Add this CSS rule to set the cursor for the disabled password field */
 #password[disabled] {
     cursor: not-allowed;
 }
-.row-error{
+
+.row-error {
     display: flex;
     flex-wrap: wrap;
     width: 312px;

@@ -82,6 +82,8 @@ function addMessageToHistoryOnRecived(uid, position, msg) {
         let box = document.getElementById('chatBox')
         box.innerHTML += `<li class="${position.toLowerCase()}Chat"><span class="${position}Chat">${msg}</span></li>`
     }
+    let box = document.getElementById('chatBox')
+    box.scrollTop = box.scrollHeight;
     console.log('on receving', chatHistory)
 }
 function getChatHistory(uid) {
